@@ -112,7 +112,7 @@ const buyLottos = function(inputMoney) {
  * @return {string} 로또 당첨 통계와 당첨 정보 문자열 출력
  */
 const setLuckyNumber = function(userLuckyArr) {
-  const genLuckyArr = getLuckyNumber(LOTTO.MAX);
+  const genLuckyArr = getLuckyNumber(LOTTO.EA);
   const matchCount = matchNumber(userLuckyArr, genLuckyArr).length;
 
   return getPrintPrize(matchCount);
