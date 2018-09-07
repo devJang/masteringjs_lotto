@@ -67,29 +67,32 @@ const getPrintLotto = function(lottoCount) {
 /**
  * 로또 발행 후 문자열 출력
  *
- * @param {number} matchCount: 당첨 번호 개수
+ * @param {number} prizeCount: 당첨 번호 개수
  * @return {string} 로또 당첨 통계와 당첨 정보 문자열 출력
  */
-const getPrintPrize = function(matchCount = 0) {
+const getPrintPrize = function(prizeCount = 0) {
   const prizeKeys = Object.keys(PRIZE);
+  const getPrizeMoneyByIndex = (val) => Object.values(PRIZE)[val];
+  const accumulatePrizeMoney = PRIZE[prizeCount] || 0;
+  const profitRate = (accumulatePrizeMoney / LOTTO.PRICE) * 100;
 
   // TODO: 수익률 계산
   return (
     prizeKeys.reduce(
       (acc, cur, index) => {
-        const price = Object.values(PRIZE)[index];
+        const prizeMoney = getPrizeMoneyByIndex(index);
 
         return (
           acc +
           `
-        ${cur}개 일치 (${price}원)- ${cur === matchCount ? matchCount : '0'}개`
+        ${cur}개 일치 (${prizeMoney}원)- ${cur === prizeCount ? prizeCount : '0'}개`
         );
       },
       `당첨 통계
       ---------`,
     ) +
     `
-      나의 수익률은 OO%입니다`
+      나의 수익률은 ${profitRate}%입니다`
   );
 };
 
@@ -113,9 +116,9 @@ const buyLottos = function(inputMoney) {
  */
 const setLuckyNumber = function(userLuckyArr) {
   const genLuckyArr = getLuckyNumber(LOTTO.EA);
-  const matchCount = matchNumber(userLuckyArr, genLuckyArr).length;
+  const prizeCount = matchNumber(userLuckyArr, genLuckyArr).length;
 
-  return getPrintPrize(matchCount);
+  return getPrintPrize(prizeCount);
 };
 
 console.log(buyLottos(3000));
