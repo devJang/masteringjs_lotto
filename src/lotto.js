@@ -37,25 +37,25 @@ const matchNumber = (userLuckyArr, genLuckyArr) => userLuckyArr.filter((item) =>
 /**
  * 다수의 로또를 생성 가능
  *
- * @param {number} lottoCount: 구매된 로또 개수
+ * @param {number} buyLottoCount: 구매된 로또 개수
  * @return {array} 생성된 로또들을 가진 배열
  */
-const getLuckyNumber = function(lottoCount) {
+const getLuckyNumber = function(buyLottoCount) {
   const generatorLuckyNumber = (max) => gen(max, getRandomIntInclusive, LOTTO.MIN, LOTTO.MAX);
 
-  return [...generatorLuckyNumber(lottoCount)];
+  return [...generatorLuckyNumber(buyLottoCount)];
 };
 
 /**
  * 로또 발행 후 문자열 출력
  *
- * @param {number} lottoCount: 구매된 로또 개수
+ * @param {number} buyLottoCount: 구매된 로또 개수
  * @return {string} 발행된 로또 정보 프린트
  */
-const getPrintLotto = function(lottoCount) {
-  const generatorLotto = (max) => gen(max, getLuckyNumber, LOTTO.EA);
+const getPrintLotto = function(buyLottoCount, lottoEa) {
+  const generatorLotto = (max) => gen(max, getLuckyNumber, lottoEa);
 
-  return [...generatorLotto(lottoCount)].reduce((acc, cur, index) => {
+  return [...generatorLotto(buyLottoCount)].reduce((acc, cur, index) => {
     return (
       `${acc}` +
       `
@@ -70,10 +70,10 @@ const getPrintLotto = function(lottoCount) {
  * @param {number} prizeCount: 당첨 번호 개수
  * @return {string} 로또 당첨 통계와 당첨 정보 문자열 출력
  */
-const getPrintPrize = function(prizeCount = 0) {
-  const prizeKeys = Object.keys(PRIZE);
-  const getPrizeMoneyByIndex = (val) => Object.values(PRIZE)[val];
-  const accumulatePrizeMoney = PRIZE[prizeCount] || 0;
+const getPrintPrize = function(prizeInfo, prizeCount = 0) {
+  const prizeKeys = Object.keys(prizeInfo);
+  const getPrizeMoneyByIndex = (val) => Object.values(prizeInfo)[val];
+  const accumulatePrizeMoney = prizeInfo[prizeCount] || 0;
   const profitRate = (accumulatePrizeMoney / LOTTO.PRICE) * 100;
 
   return (
@@ -102,9 +102,9 @@ const getPrintPrize = function(prizeCount = 0) {
  * @return {string} 로또 발행 정보와 발행된 로또 문자열 출력
  */
 const buyLottos = function(inputMoney) {
-  const LOTTO_COUNT = inputMoney / LOTTO.PRICE;
+  const buyLottoCount = inputMoney / LOTTO.PRICE;
 
-  return getPrintLotto(LOTTO_COUNT);
+  return getPrintLotto(buyLottoCount, LOTTO.EA);
 };
 
 /**
@@ -117,7 +117,7 @@ const setLuckyNumber = function(userLuckyArr) {
   const genLuckyArr = getLuckyNumber(LOTTO.EA);
   const prizeCount = matchNumber(userLuckyArr, genLuckyArr).length;
 
-  return getPrintPrize(prizeCount);
+  return getPrintPrize(PRIZE, prizeCount);
 };
 
 console.log(buyLottos(3000));
