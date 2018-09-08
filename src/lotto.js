@@ -61,7 +61,7 @@ const getPrintLotto = function(buyLottoCount, lottoEa) {
       `
     [${cur}]`
     );
-  }, `로또 ${lottoCount}개를 발행했습니다.`);
+  }, `로또 ${buyLottoCount}개를 발행했습니다.`);
 };
 
 /**
