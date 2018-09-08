@@ -76,7 +76,6 @@ const getPrintPrize = function(prizeCount = 0) {
   const accumulatePrizeMoney = PRIZE[prizeCount] || 0;
   const profitRate = (accumulatePrizeMoney / LOTTO.PRICE) * 100;
 
-  // TODO: 수익률 계산
   return (
     prizeKeys.reduce(
       (acc, cur, index) => {
